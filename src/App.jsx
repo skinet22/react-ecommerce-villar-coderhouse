@@ -34,7 +34,7 @@ function App() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Vite Docs
+            Documentación Vite
           </a>
           {' | '}
           <a
@@ -43,7 +43,7 @@ function App() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Link de prueba
+            Link de pruebas
           </a>
         </p>
       </header>
