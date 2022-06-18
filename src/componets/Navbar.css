@@ -1,0 +1,53 @@
+#header h3{
+    float:left;
+
+}
+#header img{
+    float:left;
+    height:50px;
+
+}
+#header::after{
+    content:"";
+    clear:both;
+
+}
+#menu{
+    background-color: #6fb4ec;
+    min-height: 40px;
+
+}
+#menu ul{
+    list-style: none;
+    
+    margin:auto;
+}
+#menu ul::after{
+    clear: both;
+    content:"";
+}
+#menu ul li{
+    float:left;
+    
+}
+
+#menu ul li .nav-link{
+    text-decoration: none;
+    color: #fff;
+    padding:10px 5px;
+}
+#menu ul li .nav-link:hover{
+    text-decoration: none;
+    color: #6fb4ec;
+    background:#fff;
+    padding:10px 5px;
+}
+
+#menu ul li .active{
+    background:#fff;
+    color:#6fb4ec;
+}
+
+#menu .dropdown-menu ul li a{
+    color:#000
+}
