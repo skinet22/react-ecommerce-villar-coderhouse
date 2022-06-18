@@ -1,3 +1,4 @@
+
 const CartWidget = (props) => {
     //Incluye aquí el rendering de algun texto o titulo provisional que luego remplazaremos por nuestro catalogo
     return (
