@@ -4,7 +4,7 @@ const CartWidget = (props) => {
     return (
 
         <div>
-            <i class="bi bi-cart4"></i> Carrito
+            <i className="bi bi-cart4"></i> Carrito
         </div>
     )
 }
