@@ -1,5 +1,11 @@
 import { useState } from 'react'
 import logo from './logo.svg'
+
+import {BrowserRouter,Route,Routes} from 'react-router-dom'
+
+import ItemDetailContainer from './componets/containers/ItemDetailContainer'
+import Cart from './componets/containers/Cart'
+
 import HeaderComponent from './componets/HeaderComponent.jsx'
 import NavBar from './componets/NavBar.jsx'
 import ItemListContainer from './componets/containers/ItemListContainer'
@@ -16,10 +22,19 @@ import './App.css'
 function App() {
   return (
     <div className="App">
-        <HeaderComponent />
-        <NavBar view='home'/>
-        <ItemListContainer listado="Listado de Productos" titulo="Productos Destacados"/>
       
+          <BrowserRouter>
+            <div>
+              <HeaderComponent />
+              <NavBar/>
+              <Routes>
+                <Route index path="/" element={<ItemListContainer listado={'Listado de Productos'} titulo={'Productos Destacados'}/>}/>
+                <Route path="/detail" element={<ItemDetailContainer />}/>
+                <Route path="/cart" element={<Cart />}/>
+              </Routes>
+            </div>
+          </BrowserRouter>          
+
     </div>
   )
 }
