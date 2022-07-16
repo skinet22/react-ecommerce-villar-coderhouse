@@ -1,4 +1,4 @@
-import {BrowserRouter,Route,Routes} from 'react-router-dom'
+import {BrowserRouter,Route,Routes,Navigate} from 'react-router-dom'
 
 import ItemDetailContainer from './componets/containers/ItemDetailContainer'
 import Cart from './componets/containers/Cart'
@@ -25,10 +25,11 @@ function App() {
                 <HeaderComponent />
                 <NavBar/>
                 <Routes>
-                  <Route index path="/" element={<ItemListContainer listado={'Listado de Productos'} titulo={'Productos Destacados'}/>}/>
-                  <Route index path="/:categoria" element={<ItemListContainer listado={'Listado de Productos'} titulo={'Productos Destacados'}/>}/>
+                  <Route index path="/" element={<ItemListContainer titulo={'Productos Destacados'}/>}/>
+                  <Route index path="/categorias/:cat" element={<ItemListContainer titulo={'Productos Destacados'}/>}/>
                   <Route path="/detail/:id" element={<ItemDetailContainer />}/>
                   <Route path="/cart" element={<Cart />}/>
+                  <Route path="*" element={<Navigate to='/' />}/>
                 </Routes>
               </div>
             </BrowserRouter>          

@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react'
-import { Link,useParams  } from "react-router-dom";
+import { useParams  } from "react-router-dom";
 import Loading from '../Loading';
 import ItemCount from './products/ItemCount';
 
@@ -45,6 +45,7 @@ const ItemDetailContainer = () => {
                         <p className="card-text">{prod.descripcion}</p>
                         <i className="btn btn-danger">$ {prod.precio}</i>
                         <ItemCount stock={prod.stock}/>
+                        <button className="btn btn-primary" >Agregar al carrito</button>
                                  
                     </div>
                 </div>       

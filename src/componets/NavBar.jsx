@@ -1,5 +1,5 @@
 import './Navbar.css'
-import { Link,useParams  } from "react-router-dom";
+import { NavLink,useParams  } from "react-router-dom";
 
 const NavBar = ({view}) => {
     let params = useParams();
@@ -7,11 +7,12 @@ const NavBar = ({view}) => {
     let catp ="";
     let cats ="";
     let catpr ="";
+    
      (params.categoria=="remeras") ? catr="active" : catr="";
      (params.categoria=="pantalones") ? catp="active" : catp="";
      (params.categoria=="sueters") ? cats="active" : cats="";
      (params.categoria=="promociones") ? catpr="active" : catpr="";
- 
+     
    
     return (
         //Customiza tu navBar como Prefieras
@@ -24,21 +25,21 @@ const NavBar = ({view}) => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <Link className="nav-link" to="/">Home</Link>
+                            <NavLink className={({isActive})=>isActive ? 'nav-link active' :  'nav-link'} to="/">Home</NavLink>
                         </li>
                         <li className="nav-item">
-                            <Link className={`nav-link ${catr}`} to="/categorias/remeras">Remeras</Link>
+                            <NavLink className={({isActive})=>isActive ? 'nav-link active' :  'nav-link'} to="/categorias/remeras">Remeras</NavLink>
                         </li>
-                        <li className="nav-item dropdown">
+                        <li className="nav-item">
+                            <NavLink className={({isActive})=>isActive ? 'nav-link active' :  'nav-link'} to="/categorias/sueters">Suerters</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className={({isActive})=>isActive ? 'nav-link active' :  'nav-link'} to="/categorias/pantalones">Pantalones</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className={({isActive})=>isActive ? 'nav-link active' :  'nav-link'} to="/categorias/zapatillas">Zapatillas</NavLink>
+                        </li>
                         
-                        <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Vestimenta</Link>
-                        <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><Link className={`dropdown-item ${cats}`} to="/categorias/sueters">Sueters</Link></li>
-                            <li><Link className={`dropdown-item ${catp}`} to="/categorias/pantalones">Pantalones</Link></li>
-                            <li><hr className="dropdown-divider"/></li>
-                            <li><Link className={`dropdown-item ${catpr}`} to="/">Promociones</Link></li>
-                        </ul>
-                        </li>
                     </ul>
                 </div>
             </div>
