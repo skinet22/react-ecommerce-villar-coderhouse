@@ -1,6 +1,7 @@
 import { useState,useEffect } from 'react'
 import { Link,useParams  } from "react-router-dom";
 import Loading from '../Loading';
+import ItemCount from './products/ItemCount';
 
 const ItemDetailContainer = () => {
     let params = useParams();
@@ -43,6 +44,7 @@ const ItemDetailContainer = () => {
                         <img className="card-img-top" src={prod.img} alt={prod.nombre}/>
                         <p className="card-text">{prod.descripcion}</p>
                         <i className="btn btn-danger">$ {prod.precio}</i>
+                        <ItemCount stock={prod.stock}/>
                                  
                     </div>
                 </div>       
