@@ -1,4 +1,6 @@
 
+import { Link,useParams  } from "react-router-dom";
+
 const Item = (props) => {
     return (
 
@@ -7,7 +9,9 @@ const Item = (props) => {
         <div className="card-body">
             <h5 className="card-title">{props.producto.nombre}</h5>
             <p className="card-text">{props.producto.descripcion}</p>
-            <a href="#" className="btn btn-primary">{props.producto.precio}</a>
+            <i className="btn btn-danger">$ {props.producto.precio}</i>
+            <br></br>
+            <Link className={`btn btn-primary`} to={`detail/${props.producto.id}`}>Ver Detalle</Link>
         </div>
         </div>
     )
