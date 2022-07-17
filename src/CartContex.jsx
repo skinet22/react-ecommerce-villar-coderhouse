@@ -1,36 +1,50 @@
 import React, {createContext,useState} from 'react';
 
-const ProductsInCart = [
-    {id:2345,nombre:"Monitor",precio:200,cantidad:1,},
-    {id:2346,nombre:"Teclado",precio:100,cantidad:1,},
-    {id:2347,nombre:"Mouse",precio:50,cantidad:1,},
-    {id:2348,nombre:"Impresora",precio:300,cantidad:1,},
-    {id:2349,nombre:"Scanner",precio:150,cantidad:1,},
-    {id:2350,nombre:"Router",precio:100,cantidad:1,},
-];
 
 
 export const CartProvider = ({children}) => {
-    const [Products, setCart] = useState(ProductsInCart);
+    const [Carrito, setCart] = useState([]);
 
 
+ 
     const addProduct = (product) => {
-        const newProducts = [...Products, product];
-        setCart(newProducts);
+        
+       
+        if(isInCart(product)){
+            const Cart2 = Carrito.map(prod => {
+                if (prod.item.id === product.item.id) {
+                    prod.quantity = prod.quantity+product.quantity;
+                }
+                return prod;
+            }
+            );
+            setCart(Cart2);
+        }else{
+
+            setCart([...Carrito, product]);
+        }
+        
     }
+
+    const isInCart = (product) => {
+        let productoInCart = Carrito.find(item => item.item.id === product.item.id);
+        productoInCart ? productoInCart = true : productoInCart =false;
+        return productoInCart
+    }
+
     const removeProduct = (id) => {
-        const newProducts = Products.filter(product => product.id !== id);
-        setCart(newProducts);
+        const Cart2 = Carrito.filter(product => product.item.id !== id);
+        setCart(Cart2);
     }
     const updateProduct = (id, cantidad) => {
-        const newProducts = Products.map(product => {
+        const Carrito2 = Carrito.map(product => {
             if (product.id === id) {
                 product.cantidad = cantidad;
             }
             return product;
         }
         );
-        setCart(newProducts);
+        setCart(Carrito2);
     }
 
     const emptyCart = () => {
@@ -40,7 +54,7 @@ export const CartProvider = ({children}) => {
 
 
     return (
-        <CartContext.Provider value={[Products, setCart]}>
+        <CartContext.Provider value={[Carrito, addProduct,removeProduct,updateProduct,emptyCart]}>
             {children}
         </CartContext.Provider>
     );

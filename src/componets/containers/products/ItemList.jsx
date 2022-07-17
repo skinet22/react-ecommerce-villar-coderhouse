@@ -12,8 +12,6 @@ const ItemList = () => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        //let bolean = true;
-       
                 fetch('../assets/DataProducts.json')
                 .then((response) => response.json())
                 .then((data) => {
