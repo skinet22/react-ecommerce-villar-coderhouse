@@ -1,4 +1,5 @@
 import { useState,useEffect,useContext } from 'react'
+import {doc, getFirestore,getDoc } from 'firebase/firestore'
 
 import { useParams,NavLink  } from "react-router-dom";
 import Loading from '../Loading';
@@ -21,30 +22,21 @@ const funcionContador = (contador) => {
 
     
 }
-console.log(Carrito);
-    useEffect(() => {
-        //let bolean = true;
-        if (bolean) {
-                fetch('../../assets/DataProducts.json')
-                .then((response) => response.json())
-                .then((data) => {
-                  let p = data.filter(data => data.id == params.id);
-                  p=p[0];
-                  setProduct(p);
-                  setBoleans(!bolean);
-                })
-                .finally((res) => {
-                    setLoading(false)
-                  
-                });
-            
 
-        } else {
-          console.log('Rechazado 404');
-        }
-        
-      }, [bolean]);
-      
+
+
+            useEffect(() => {
+            const db = getFirestore();
+            const queryProducts = doc(db,'productos',params.id);
+            getDoc(queryProducts).then(
+                resp => {
+                    setProduct({id:resp.id,...resp.data()});  
+            }).catch((err) => { console.log(err) })
+            .finally((resp) => {
+                setLoading(false) 
+            });
+            }, [params.id]);
+
 
     return (
         <>
