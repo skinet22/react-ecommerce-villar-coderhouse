@@ -8,19 +8,25 @@ export const CartProvider = ({children}) => {
 
  
     const addProduct = (product) => {
-       
         if(isInCart(product)){
-            const Cart2 = Carrito.map(prod => {
+            let cartSession = getCart();
+            const Cart2 = cartSession.map(prod => {
                 if (prod.item.id === product.item.id) {
                     prod.quantity = prod.quantity+product.quantity;
                 }
+                
                 return prod;
             }
             );
+            console.log(Cart2);
             setCart(Cart2);
             localStorage.setItem('Carrito', JSON.stringify(Cart2));
         }else{
-
+            
+            if(Carrito.length==0) {
+                let cartS = getCart();
+                setCart(cartS);
+            } 
             setCart([...Carrito, product]);
             localStorage.setItem('Carrito', JSON.stringify([...Carrito, product]));
             
@@ -39,28 +45,15 @@ export const CartProvider = ({children}) => {
 
     const getCart = () => {
         const Cart = JSON.parse(localStorage.getItem('Carrito'));
-        if (Cart[0] !== null) {
+        
+        if (Cart) {
             return Cart;
         }else{
             return Carrito;
         }
     }
 
-    const generateOrder  = () => {
-        let Cart = getCart();
-        let order = {
-            buyer:{name:'',email:'',phone:''}, 
-            items: Cart.map(prod => {
-                return {
-                    id: prod.item.id,
-                    price: prod.precio,
-                    title: prod.nombre
-                }
-            }),
-            total: totalCart()
-        }
-        console.log(order)
-    }
+
     const isInCart = (product) => {
 
         let Cart = getCart();
@@ -76,7 +69,7 @@ export const CartProvider = ({children}) => {
     }
 
     const removeProduct = (id) => {
-        console.log(Carrito);
+        
         if(Carrito.length == 0){
             let cartSession = getCart();
             setCart(cartSession); 
@@ -87,6 +80,8 @@ export const CartProvider = ({children}) => {
         localStorage.setItem('Carrito', JSON.stringify(Cart2));
     }
     const updateProduct = (id, cantidad) => {
+
+
         const Carrito2 = Carrito.map(product => {
             if (product.id === id) {
                 product.cantidad = cantidad;
@@ -106,7 +101,7 @@ export const CartProvider = ({children}) => {
 
 
     return (
-        <CartContext.Provider value={[Carrito, addProduct,removeProduct,updateProduct,emptyCart,getCart,totalCart,generateOrder]}>
+        <CartContext.Provider value={[Carrito, addProduct, removeProduct, updateProduct, emptyCart, getCart, totalCart]}>
             {children}
         </CartContext.Provider>
     );

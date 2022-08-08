@@ -1,6 +1,8 @@
 import { useState,useEffect,useContext } from 'react'
 import {doc, getFirestore,getDoc } from 'firebase/firestore'
 
+
+import './ItemDetailContainer.css'
 import { useParams,NavLink  } from "react-router-dom";
 import Loading from '../Loading';
 import ItemCount from './products/ItemCount';
@@ -42,21 +44,47 @@ const funcionContador = (contador) => {
         <>
         { loading ? <Loading/> :  
             
-            <div className="container">
-                <div className="card col-lg-4">
-                    <div className="card-body">    
-                        <h5 className="card-title">{prod.nombre}</h5>
-                        <img className="card-img-top" src={prod.img} alt={prod.nombre}/>
-                        <p className="card-text">{prod.descripcion}</p>
-                        <i className="btn btn-danger">$ {prod.precio}</i>
-                        {cantidad===undefined ? <ItemCount stock={prod.stock} initial={1} onAdd={funcionContador}/> : <NavLink to="/cart"><p><button className="btn btn-succes">Terminar Compra</button></p></NavLink>}
-                        
-                        
-                                 
+
+        <div className="container">
+            <div className="col-lg-8 border p-3 main-section bg-white">
+                <div className="row m-0">
+                    <div className="col-lg-4 left-side-product-box pb-3">
+                        <img className="border p-3" src={prod.img} alt={prod.nombre}/>
+                        <span className="sub-img">
+                            <img className="border p-2" src={prod.img} alt={prod.nombre}/>
+                            <img className="border p-2" src={prod.img} alt={prod.nombre}/>
+                        </span>
                     </div>
-                </div>       
-            </div> 
-            
+                    <div className="col-lg-8">
+                        <div className="right-side-pro-detail border p-3 m-0">
+                            <div className="row">
+                                <div className="col-lg-12">
+                                    <span>{prod.categorias}</span>
+                                    <p className="m-0 p-0">{prod.nombre}</p>
+                                </div>
+                                <div className="col-lg-12">
+                                    <p className="m-0 p-0 price-pro">${prod.precio}</p>
+                                    <hr className="p-0 m-0"></hr>
+                                </div>
+                                <div className="col-lg-12 pt-2">
+                                    <h5>Descripción</h5>
+                                    <span>{prod.descripcion}</span>
+                                    <hr className="m-0 pt-2 mt-2"></hr>
+                                </div>
+                                <div className="col-lg-12">
+                                    <p className="tag-section"><strong>Tag : </strong><a href="">Woman</a><a href="">,Man</a></p>
+                                </div>
+                                <div className="col-lg-12">
+                                    <h6>Cantidad :</h6>
+                                    {cantidad===undefined ? <ItemCount stock={prod.stock} initial={1} onAdd={funcionContador}/> : <NavLink to="/cart"><p><button className="btn btn-danger">Terminar Compra</button></p></NavLink>}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
             
         }
 

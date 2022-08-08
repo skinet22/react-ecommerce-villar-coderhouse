@@ -1,12 +1,16 @@
 import { Link,useParams  } from "react-router-dom";
-import React, {useContext} from 'react';
+import React, {useContext,useState} from 'react';
 import {CartContext} from '../CartContex'   //Importamos el contexto de nuestro carrito
 
 
 const CartWidget = (props) => {
-    const [Products,setCart] = useContext(CartContext);
+    const [Carrito,addProduct, removeProduct, updateProduct, emptyCart,getCart] = useContext(CartContext);
+    //const [cartSession,setCart] = useState([]);
+    let Cart = getCart();
+    //setCart(Cart);
+    console.log(Cart);
     let count = 0;
-    Products ? Products.map(prod => { count += prod.quantity}) : count = 0;
+    Cart ? Cart.map(prod => { count += prod.quantity}) : count = 0;
     return (
 
         <div>
