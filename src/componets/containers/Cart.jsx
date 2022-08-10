@@ -49,10 +49,8 @@ const Cart = (props) => {
             menssage = 'Todos los campos son obligatorios.';
             setMenssage(menssage);
         }else{
-            console.log("Todo OK!!");
             setErrform(false);
             Email === EmailConfirm? setErrform(false): setErrform(true);
-            console.log(validateForm);
             if(Email != EmailConfirm){ menssage = 'El correo electronico debe coincidir'; setMenssage(menssage);}
         }
         if(validateForm===false){
