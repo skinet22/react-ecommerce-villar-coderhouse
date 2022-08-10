@@ -8,11 +8,14 @@ const Cart = (props) => {
     const [orderAdd, setOrder] = useState(false);
     const [loading, setLoading] = useState(false);
     const [ordererrAdd, setErr] = useState(false);
+    const [validateForm, setErrform] = useState(true);
     const [orderId, setId] = useState('');
     const [NombreApellido, setNombre] = useState('');
     const [Email, setEmail] = useState('');
+    const [EmailConfirm, setEmailconfirm] = useState('');
     const [Telefono, setNTelefono] = useState('');
     const [Direccion, setDireccion] = useState('');
+    const [menssageErr, setMenssage] = useState('');
     const onHandonChangeValue = (e) => {
         //funcion para capturar el nombre y value de los campos del form, segun el campo se asigna un estado para luego generar la orden
         switch(e.target.name) {
@@ -21,6 +24,9 @@ const Cart = (props) => {
             break;
             case 'email':
                 setEmail(e.target.value);
+            break;
+            case 'emailConfirm':
+                setEmailconfirm(e.target.value);
             break;
             case 'telefono':
                 setNTelefono(e.target.value);
@@ -35,6 +41,21 @@ const Cart = (props) => {
         event.preventDefault();
       };
     const generateOrder  = () => {
+        //funcion para generar la orden
+        
+        let menssage = '';  
+        if(NombreApellido==='' || Email==='' || EmailConfirm==='' || Telefono===''){ 
+            setErrform(true);
+            menssage = 'Todos los campos son obligatorios.';
+            setMenssage(menssage);
+        }else{
+            console.log("Todo OK!!");
+            setErrform(false);
+            Email === EmailConfirm? setErrform(false): setErrform(true);
+            console.log(validateForm);
+            if(Email != EmailConfirm){ menssage = 'El correo electronico debe coincidir'; setMenssage(menssage);}
+        }
+        if(validateForm===false){
         setLoading(true)
         let Cart = getCart();
         let order = {
@@ -58,7 +79,8 @@ const Cart = (props) => {
         }).finally(() => {
         setLoading(false);
         emptyCart()
-        });       
+        });    
+    }  
     }
     return (
         <div>
@@ -94,27 +116,28 @@ const Cart = (props) => {
                         <div className="card-body">
                             <h5 className="card-title">Total</h5>
                             <p className="card-text">$ {totalCart()}</p>
+                            {menssageErr!=''? <div className="alert alert-danger">{menssageErr}</div>: null}
                             <form name="Comprar" onSubmit={onSubmit}>
                                 <div className="form-row">
                                     <div className="form-group col-md-12">
-                                        <label htmlFor="inputName">Nombre y Apellido</label>
-                                        <input type="text" className="form-control" name="nombre" id="inputName" placeholder="Nombre y Apellido" value={NombreApellido} onChange={onHandonChangeValue}/>
+                                        <label htmlFor="inputName">Nombre y Apellido *</label>
+                                        <input type="text" className="form-control" name="nombre" id="inputName" placeholder="Nombre y Apellido" value={NombreApellido} onChange={onHandonChangeValue} required/>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="form-group col-md-6">
-                                        <label htmlFor="inputEmail4">Email</label>
-                                        <input type="email" className="form-control" name="email" id="inputEmail4" placeholder="Email" value={Email} onChange={onHandonChangeValue}/>
+                                        <label htmlFor="inputEmail4">Email *</label>
+                                        <input type="email" className="form-control" name="email" id="inputEmail4" placeholder="Email" value={Email} onChange={onHandonChangeValue} required/>
                                     </div>
                                     <div className="form-group col-md-6">
-                                        <label htmlFor="inputTel">Teléfono</label>
-                                        <input type="phone" className="form-control" name="telefono" id="inputTel" placeholder="Teléfono" value={Telefono} onChange={onHandonChangeValue}/>
+                                        <label htmlFor="inputEmailconfim">Confirmar Email *</label>
+                                        <input type="email" className="form-control" name="emailConfirm" id="inputEmailconfim" placeholder="Confirmar Email" value={EmailConfirm} onChange={onHandonChangeValue} required/>
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="form-group">
-                                        <label htmlFor="inputAddress">Dirección</label>
-                                        <input type="text" className="form-control" name="direccion" id="inputAddress" placeholder="1234 Main St" value={Direccion} onChange={onHandonChangeValue}/>
+                                    <div className="form-group col-md-12">
+                                        <label htmlFor="inputTel">Teléfono *</label>
+                                        <input type="phone" className="form-control" name="telefono" id="inputTel" placeholder="Teléfono" value={Telefono} onChange={onHandonChangeValue} required/>
                                     </div>
                                 </div>
                                 <div className="row">
