@@ -1,14 +1,10 @@
 import { useState,useEffect,useContext } from 'react'
 import {doc, getFirestore,getDoc } from 'firebase/firestore'
-
-
 import './ItemDetailContainer.css'
 import { useParams,NavLink  } from "react-router-dom";
 import Loading from '../Loading';
 import ItemCount from './products/ItemCount';
 import { CartContext } from '../../CartContex';
-
-
 const ItemDetailContainer = () => {
     const  [Carrito,addProduct] = useContext(CartContext);
     let params = useParams();
@@ -16,35 +12,24 @@ const ItemDetailContainer = () => {
     const [bolean, setBoleans] = useState(true);
     const [loading, setLoading] = useState(true);
     const [cantidad, setCantidad] = useState();
-
-const funcionContador = (contador) => {
-    
+    const funcionContador = (contador) => {
     addProduct({item:prod,quantity:contador});
     setCantidad(contador);
-
-    
 }
-
-
-
-            useEffect(() => {
-            const db = getFirestore();
-            const queryProducts = doc(db,'productos',params.id);
-            getDoc(queryProducts).then(
-                resp => {
-                    setProduct({id:resp.id,...resp.data()});  
-            }).catch((err) => { console.log(err) })
-            .finally((resp) => {
-                setLoading(false) 
-            });
-            }, [params.id]);
-
-
+useEffect(() => {
+    const db = getFirestore();
+    const queryProducts = doc(db,'productos',params.id);
+    getDoc(queryProducts).then(
+        resp => {
+            setProduct({id:resp.id,...resp.data()});  
+    }).catch((err) => { console.log(err) })
+    .finally((resp) => {
+        setLoading(false) 
+    });
+}, [params.id]);
     return (
         <>
         { loading ? <Loading/> :  
-            
-
         <div className="container">
             <div className="col-lg-8 border p-3 main-section bg-white">
                 <div className="row m-0">
@@ -84,15 +69,8 @@ const funcionContador = (contador) => {
                 </div>
             </div>
         </div>
-
-            
         }
-
-
-
-                   
         </>
-        
     )
 }
 export default ItemDetailContainer

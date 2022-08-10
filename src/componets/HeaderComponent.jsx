@@ -2,7 +2,6 @@ import logo from '../logo.svg'
 import './Navbar.css'
 import CartWidget from './CartWidget'
 const HeaderComponent = () => {
-
     return (
         //Customiza tu navBar como Prefieras
         <header>
@@ -21,7 +20,5 @@ const HeaderComponent = () => {
             </div>
         </header>
     )
-
-
 }
 export default HeaderComponent

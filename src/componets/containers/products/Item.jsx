@@ -1,9 +1,7 @@
 
 import { Link } from "react-router-dom";
-
 const Item = ({producto}) => {
     return (
-
         <div key={producto.id} id={producto.id} className="card col-lg-3" >
         <img className="card-img-top" src={producto.img} alt="Card image cap" />
         <div className="card-body">

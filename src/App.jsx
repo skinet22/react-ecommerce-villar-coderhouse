@@ -1,21 +1,14 @@
 import {BrowserRouter,Route,Routes,Navigate} from 'react-router-dom'
-
 import ItemDetailContainer from './componets/containers/ItemDetailContainer'
 import Cart from './componets/containers/Cart'
-
 import HeaderComponent from './componets/HeaderComponent.jsx'
 import NavBar from './componets/NavBar.jsx'
 import ItemListContainer from './componets/containers/ItemListContainer'
-
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import '../node_modules/bootstrap/dist/js/bootstrap.min.js'
-
 import '../node_modules/bootstrap-icons/font/bootstrap-icons.css'
 import { CartProvider } from './CartContex' //Importamos el contexto de nuestro carrito
-
 import './App.css'
-
-
 function App() {
   return (
     <CartProvider>
@@ -37,5 +30,4 @@ function App() {
     </CartProvider>
   )
 }
-
 export default App

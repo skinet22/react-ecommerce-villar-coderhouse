@@ -1,26 +1,44 @@
-
 import React, {useContext,useState} from 'react';
-import {CartContext} from '../../CartContex'   //Importamos el contexto de nuestro carrito
+import {CartContext} from '../../CartContex'   
 import { NavLink  } from "react-router-dom";
 import Loading from '../Loading';
 import {collection,getFirestore,addDoc} from 'firebase/firestore'
-
 const Cart = (props) => {
     const [Carrito,addProduct,removeProduct,updateProduct,emptyCart,getCart,totalCart] = useContext(CartContext);
     const [orderAdd, setOrder] = useState(false);
     const [loading, setLoading] = useState(false);
     const [ordererrAdd, setErr] = useState(false);
-
-    
-
+    const [orderId, setId] = useState('');
+    const [NombreApellido, setNombre] = useState('');
+    const [Email, setEmail] = useState('');
+    const [Telefono, setNTelefono] = useState('');
+    const [Direccion, setDireccion] = useState('');
+    const onHandonChangeValue = (e) => {
+        //funcion para capturar el nombre y value de los campos del form, segun el campo se asigna un estado para luego generar la orden
+        switch(e.target.name) {
+            case 'nombre':
+                setNombre(e.target.value);
+            break;
+            case 'email':
+                setEmail(e.target.value);
+            break;
+            case 'telefono':
+                setNTelefono(e.target.value);
+            break;
+            case 'direccion':
+                setDireccion(e.target.value);
+            break;
+          }
+      }   
     let CartSession = getCart();
-
+    const onSubmit = (event) => {
+        event.preventDefault();
+      };
     const generateOrder  = () => {
         setLoading(true)
         let Cart = getCart();
-        console.log(Cart);
         let order = {
-            buyer:{name:'Carlos Villar',email:'info@skndesarrollos.com.ar',phone:'1132479078'}, 
+            buyer:{name:NombreApellido,email:Email,phone:Telefono,address:Direccion}, 
             items: Cart.map(prod => {
                 return {
                     id: prod.item.id,
@@ -30,71 +48,85 @@ const Cart = (props) => {
             }),
             total: totalCart(),
         }
-        
-            
-          const db = getFirestore();
-          const orders = collection(db,"orders")
-          addDoc(orders,order).then(res => {
-            setOrder(true);
-          }).catch(err => {
-            setErr(true);
-            console.log("Ocurrio un error ",err)
-          }).finally(() => {
-            setLoading(false);
-            emptyCart()
-          });
-          
-          
-          
-
-
-        
+        const db = getFirestore();
+        const orders = collection(db,"orders")
+        addDoc(orders,order).then(res => {
+        setOrder(true);
+        setId(res.id);
+        }).catch(err => {
+        setErr(true);
+        }).finally(() => {
+        setLoading(false);
+        emptyCart()
+        });       
     }
-
-
-
-    //Incluye aquí el rendering de algun texto o titulo provisional que luego remplazaremos por nuestro catalogo
     return (
-
         <div>
-            
             <div className="row">
                 <div className="card col-lg-6">
-                        <div className="card-body">
-                            <h5 className="card-title">Carrito</h5>
-                            {loading && <Loading/>}
-                            {orderAdd&&<div className="alert alert-success">Orden Generada</div>}
-                            {ordererrAdd&&<div className="alert alert-warnign">Ocurrio un problema y no pudimos generar su orden</div>}
-                            <ul>
-                                {CartSession.length > 0 ? CartSession.map(prod => 
-                                <li key={prod.item.id}>
-                                    {prod.item.nombre}
-                                    
-                                    -
-                                    
-                                    Cantidad : {prod.quantity}
-                                    
-                                    -
+                    <div className="card-body">
+                        <h5 className="card-title">Carrito</h5>
+                        {loading && <Loading/>}
+                        {orderAdd&&<div className="alert alert-success">Orden Generada, Su ID de pedido es: {orderId}</div>}
+                        {ordererrAdd&&<div className="alert alert-warnign">Ocurrio un problema y no pudimos generar su orden</div>}
+                        <ul>
+                            {CartSession.length > 0 ? CartSession.map(prod => 
+                            <li key={prod.item.id}>
+                                {prod.item.nombre}
+                                
+                                -
+                                
+                                Cantidad : {prod.quantity}
+                                
+                                -
 
-                                    <i className="bi bi-trash3-fill" onClick={()=>removeProduct(prod.item.id)}></i>
-                                    </li>): <li>No hay productos en el carrito </li>}
+                                <i className="bi bi-trash3-fill" onClick={()=>removeProduct(prod.item.id)}></i>
+                                </li>): <li>No hay productos en el carrito </li>}
 
-                            </ul>
-                            {CartSession.length > 0 ? <button className="btn btn-danger" onClick={()=>emptyCart()}>Vaciar Carrito</button> :
-                            <NavLink className='btn btn-danger' to="/">Volver a la Tienda</NavLink> 
-                            }      
-                        </div>
-                    </div> 
-                    {CartSession.length > 0 && <div className="card col-lg-6">
+                        </ul>
+                        {CartSession.length > 0 ? <button className="btn btn-danger" onClick={()=>emptyCart()}>Vaciar Carrito</button> :
+                        <NavLink className='btn btn-danger' to="/">Volver a la Tienda</NavLink> 
+                        }      
+                    </div>
+                </div> 
+                    {CartSession.length > 0 && 
+                    <div className="card col-lg-6">
                         <div className="card-body">
                             <h5 className="card-title">Total</h5>
                             <p className="card-text">$ {totalCart()}</p>
-                             <button className="btn btn-success" onClick={()=>generateOrder()}>Generar Orden</button>
+                            <form name="Comprar" onSubmit={onSubmit}>
+                                <div className="form-row">
+                                    <div className="form-group col-md-12">
+                                        <label htmlFor="inputName">Nombre y Apellido</label>
+                                        <input type="text" className="form-control" name="nombre" id="inputName" placeholder="Nombre y Apellido" value={NombreApellido} onChange={onHandonChangeValue}/>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="form-group col-md-6">
+                                        <label htmlFor="inputEmail4">Email</label>
+                                        <input type="email" className="form-control" name="email" id="inputEmail4" placeholder="Email" value={Email} onChange={onHandonChangeValue}/>
+                                    </div>
+                                    <div className="form-group col-md-6">
+                                        <label htmlFor="inputTel">Teléfono</label>
+                                        <input type="phone" className="form-control" name="telefono" id="inputTel" placeholder="Teléfono" value={Telefono} onChange={onHandonChangeValue}/>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="form-group">
+                                        <label htmlFor="inputAddress">Dirección</label>
+                                        <input type="text" className="form-control" name="direccion" id="inputAddress" placeholder="1234 Main St" value={Direccion} onChange={onHandonChangeValue}/>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="form-group">
+                                    <button className="btn btn-success" onClick={()=>generateOrder()}>Generar Orden</button>
+                                    </div>
+                                </div>
+                            </form>                             
                         </div>
                     </div> 
                     }       
             </div>
-
         </div>
     )
 }
